@@ -3,17 +3,17 @@ package com.growte.lightmodbus;
 import java.io.IOException;
 import java.util.Date;
 
+import net.wimpi.modbus.Modbus;
+import net.wimpi.modbus.ModbusIOException;
+
 import com.growte.lightmodbus.code.ExceptionCode;
-import com.growte.lightmodbus.code.ModBusCommCode;
+import com.growte.lightmodbus.code.GateWayCommandCode;
 import com.growte.lightmodbus.io.MDTCPSlaveConnection;
 import com.growte.lightmodbus.io.MDTCPTransport;
 import com.growte.lightmodbus.message.AuthServerRequest;
 import com.growte.lightmodbus.message.AuthServerResponse;
 import com.growte.lightmodbus.message.MDRequest;
 import com.growte.lightmodbus.message.MDResponse;
-
-import net.wimpi.modbus.Modbus;
-import net.wimpi.modbus.ModbusIOException;
 
 public class GPRSConnectionHandler implements Runnable, CommandHandle {
 
@@ -49,9 +49,9 @@ public class GPRSConnectionHandler implements Runnable, CommandHandle {
 	    	  MDResponse response = null;
 	    	  //1. read the request
 	    	  MDRequest request = m_Transport.readRequest();
-	    	  if(request != null && request.getComm_code() == ModBusCommCode.AUTH_SERVER){
+	    	  if(request != null && request.getComm_code() == GateWayCommandCode.AUTH_SERVER){
 	    		  response = handleAuth(request);
-	    	  }else if(request !=null && request.getComm_code() == ModBusCommCode.HEART_BEAT){
+	    	  }else if(request !=null && request.getComm_code() == GateWayCommandCode.HEART_BEAT){
 	    		  handleHB(request);
 	    	  }else{
 	    	    if (Modbus.debug) System.out.println("Request:" + request.getHexMessage());

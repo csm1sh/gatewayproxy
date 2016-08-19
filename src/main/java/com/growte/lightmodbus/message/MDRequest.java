@@ -1,6 +1,6 @@
 package com.growte.lightmodbus.message;
 
-import com.growte.lightmodbus.code.ModBusCommCode;
+import com.growte.lightmodbus.code.GateWayCommandCode;
 
 import net.wimpi.modbus.msg.IllegalFunctionRequest;
 
@@ -88,7 +88,7 @@ public abstract class MDRequest extends MDMessageImpl{
 		    MDRequest request = null;
 
 		    switch (commCode) {
-		     case ModBusCommCode.AUTH_SERVER:
+		     case GateWayCommandCode.AUTH_SERVER:
 		        request = new AuthServerRequest();
 		        break;
 		      default:

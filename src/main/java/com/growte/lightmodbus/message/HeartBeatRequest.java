@@ -4,14 +4,14 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import com.growte.lightmodbus.code.ModBusCommCode;
+import com.growte.lightmodbus.code.GateWayCommandCode;
 
 public class HeartBeatRequest  extends MDRequest {
 
 	public HeartBeatRequest() {
 		super();
 		this.setDataLength(0);
-		this.setComm_code( ModBusCommCode.HEART_BEAT);
+		this.setComm_code( GateWayCommandCode.HEART_BEAT);
 	}
 
 	@Override

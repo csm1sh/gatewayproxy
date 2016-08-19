@@ -4,14 +4,14 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import com.growte.lightmodbus.code.ModBusCommCode;
+import com.growte.lightmodbus.code.GateWayCommandCode;
 
 public class AlarmRequest  extends MDRequest {
 
 	public AlarmRequest() {
 		super();
 		this.setDataLength(16);
-		this.setComm_code( ModBusCommCode.ALARM);
+		this.setComm_code( GateWayCommandCode.ALARM);
 	}
 
 	@Override

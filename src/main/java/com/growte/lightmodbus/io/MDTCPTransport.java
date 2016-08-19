@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import com.growte.lightmodbus.MDRequestFactory;
+import com.growte.lightmodbus.code.GateWayCommandCode;
 import com.growte.lightmodbus.message.MDMessage;
 import com.growte.lightmodbus.message.MDRequest;
 import com.growte.lightmodbus.message.MDResponse;

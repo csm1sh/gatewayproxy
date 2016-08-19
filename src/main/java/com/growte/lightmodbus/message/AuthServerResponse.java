@@ -4,7 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import com.growte.lightmodbus.code.ModBusCommCode;
+import com.growte.lightmodbus.code.GateWayCommandCode;
 import com.growte.lightmodbus.util.MDUtil;
 
 public class AuthServerResponse
@@ -17,7 +17,7 @@ public class AuthServerResponse
   public AuthServerResponse(){
     super();
     this.setDataLength(AUTH_CODE_LENGTH);
-    this.setComm_code( ModBusCommCode.AUTH_SERVER);
+    this.setComm_code( GateWayCommandCode.AUTH_SERVER);
   }
 
   @Override

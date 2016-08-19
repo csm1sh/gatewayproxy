@@ -1,6 +1,6 @@
 package com.growte.lightmodbus;
 
-import com.growte.lightmodbus.code.ModBusCommCode;
+import com.growte.lightmodbus.code.GateWayCommandCode;
 import com.growte.lightmodbus.command.Writable;
 import com.growte.lightmodbus.message.AlarmRequest;
 import com.growte.lightmodbus.message.AuthServerRequest;
@@ -13,11 +13,11 @@ public class MDRequestFactory {
 	public MDRequest buildFrom(int comandCode){
 		 MDRequest request = null;
 		 switch (comandCode) {
-		 case ModBusCommCode.AUTH_SERVER:
+		 case GateWayCommandCode.AUTH_GRPS:
 		   request = new AuthServerRequest(); break;
-		 case ModBusCommCode.HEART_BEAT:
+		 case GateWayCommandCode.HEART_BEAT:
 			   request = new HeartBeatRequest(); break;
-		 case ModBusCommCode.ALARM:
+		 case GateWayCommandCode.ALARM:
 			   request = new AlarmRequest(); break;
 		  default:
 			  request = null;

@@ -4,7 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import com.growte.lightmodbus.code.ModBusCommCode;
+import com.growte.lightmodbus.code.GateWayCommandCode;
 import com.growte.lightmodbus.command.Writable;
 
 public class FunctionalRequest extends MDRequest {
@@ -13,7 +13,6 @@ public class FunctionalRequest extends MDRequest {
 		super();
 		this.command = command;
 		this.setDataLength(command.dataLength());
-		this.setComm_code( ModBusCommCode.COMM_REREDIRECT);
 	}
 
 	@Override

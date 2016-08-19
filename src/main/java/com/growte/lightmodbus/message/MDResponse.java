@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import com.growte.lightmodbus.code.ModBusCommCode;
+import com.growte.lightmodbus.code.GateWayCommandCode;
 
 
 public abstract class MDResponse  extends MDMessageImpl {
@@ -40,7 +40,7 @@ public abstract class MDResponse  extends MDMessageImpl {
 	    MDResponse response = null;
 
 	    switch (functionCode) {
-	      case ModBusCommCode.AUTH_SERVER:
+	      case GateWayCommandCode.AUTH_SERVER:
 	        response = new AuthServerResponse(); break;
 	      default:
 	        response = new ExceptionResponse();
