@@ -15,20 +15,17 @@ public class FunctionalCommand implements ICommand {
 	
 	public void writeData(DataOutput dop) throws IOException {
 		dop.writeBytes(this.paramBody);
-
 	}
 
 
 	@Override
 	public String getParamBody() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.paramBody;
 	}
 
 	@Override
 	public int getCommandCode() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.getCommandCode();
 	}
 
 }

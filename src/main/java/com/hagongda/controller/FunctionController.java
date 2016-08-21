@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hagongda.lightmodbus.CommandHandle;
 import com.hagongda.lightmodbus.GPRSHandlerPool;
+import com.hagongda.lightmodbus.MDRequestFactory;
 import com.hagongda.lightmodbus.code.GateWayCommandCode;
+import com.hagongda.lightmodbus.command.FunctionalCommand;
 
 @RestController
 @RequestMapping(value="/v1/{gatewayId}", produces="application/json")
@@ -27,19 +29,19 @@ public class FunctionController {
 	
 	@RequestMapping(value="/light/group", method=RequestMethod.POST) 
 	public String group(@PathVariable String gatewayId, @RequestBody String params) throws Exception{
-		forward(gatewayId, GateWayCommandCode.SET_GROUP);
+		forward(gatewayId, new FunctionalCommand(GateWayCommandCode.SET_GROUP, params));
 		return OK();
 	}
 	
 	@RequestMapping(value="/light/position", method=RequestMethod.POST) 
 	public String position(@PathVariable String gatewayId, @RequestBody String params) throws Exception{
-		forward(gatewayId, GateWayCommandCode.SET_LOCATION);
+		forward(gatewayId, new FunctionalCommand(GateWayCommandCode.SET_LOCATION, params));
 		return OK();
 	}
 	
 	@RequestMapping(value="/light/time", method= RequestMethod.POST) 
 	public String setTime(@PathVariable String gatewayId, @RequestBody String params) throws Exception{
-		forward(gatewayId, GateWayCommandCode.SET_TIME);
+		forward(gatewayId,  new FunctionalCommand(GateWayCommandCode.SET_TIME, params));
 		return OK();
 	}
 	
@@ -51,7 +53,7 @@ public class FunctionController {
 	 */
 	@RequestMapping(value="/light/time", method= RequestMethod.GET) 
 	public String getTime(@PathVariable String gatewayId, @RequestBody String params) throws Exception{
-		forward(gatewayId, GateWayCommandCode.READ_TIME);
+		forward(gatewayId,   new FunctionalCommand(GateWayCommandCode.READ_TIME, params));
 		return OK();
 	}
 	
@@ -64,19 +66,20 @@ public class FunctionController {
 	 */
 	@RequestMapping(value="/light/segMinus", method= RequestMethod.POST) 
 	public String setMinus(@PathVariable String gatewayId, @RequestBody String params) throws Exception{
-		forward(gatewayId, GateWayCommandCode.SET_LOCATION);
+		forward(gatewayId,  new FunctionalCommand(GateWayCommandCode.SET_LOCATION, params));
 		return OK();
 	}
 	
 	
 	
-	private CommandHandle forward(String gatewayId, int command) throws Exception{
+	private CommandHandle forward(String gatewayId, FunctionalCommand command) throws Exception{
 		CommandHandle handler = GPRSHandlerPool.getInstance().get(gatewayId);
 		if(handler == null){
 			throw new InvalidGatewayException();
 		}else if(handler.isBusy()){
 			throw new GatewayBusyException();
 		}
+		MDRequestFactory.getInstacce().buildFrom(command);
 		return handler;
 	}
 	
