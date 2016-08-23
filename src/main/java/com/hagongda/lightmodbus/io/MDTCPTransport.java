@@ -90,7 +90,7 @@ public class MDTCPTransport {
 	        int bf = MDUtil.registerToShort(buffer, 4);
 	        // extract command code
 	        int commCode = MDUtil.byteToInt(buffer, 1);
-	        if (Modbus.debug) System.out.println("Request Command code:" + commCode);
+	        System.out.println("Request Command code:" + commCode);
 	        //
 	        //read rest
 	        if (m_Input.read(buffer, 6, bf) == -1) {

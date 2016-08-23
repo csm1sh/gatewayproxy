@@ -13,7 +13,6 @@ public abstract class MDMessageImpl implements MDMessage{
 	//instance attributes
 	  private int m_TransactionID = Modbus.DEFAULT_TRANSACTION_ID;
 	  private int m_DataLength;
-	  private int m_FunctionCode;
 	  private int comm_code;
 
 	 public int getComm_code() {
@@ -61,26 +60,6 @@ public abstract class MDMessageImpl implements MDMessage{
 	    m_DataLength = length;
 	  }//setData
 
-
-	  public int getFunctionCode() {
-	    return m_FunctionCode;
-	  }//getFunctionCode
-
-	  /**
-	   * Sets the function code of this <tt>ModbusMessage</tt>.<br>
-	   * The function code should be a 1-byte non negative
-	   * integer value valid in the range of 0-127.<br>
-	   * Function codes are ordered in conformance
-	   * classes their values are specified in
-	   * <tt>net.wimpi.modbus.Modbus</tt>.
-	   *
-	   * @param code the code of the function to be set.
-	   * @see net.wimpi.modbus.Modbus
-	   */
-	  protected void setFunctionCode(int code) {
-	    m_FunctionCode = code;
-	    //setChanged(true);
-	  }//setFunctionCode
 
 
 	  /*** Data ********************************************/
@@ -161,4 +140,8 @@ public abstract class MDMessageImpl implements MDMessage{
 	  public String getHexMessage() {
 	    return MDUtil.toHex(this);
 	  }//getHexMessage
+	  
+	   public String getMessage() {
+	        return MDUtil.toString(this);
+	      }//getHexMessage
 }

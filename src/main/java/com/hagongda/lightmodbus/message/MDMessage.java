@@ -8,8 +8,7 @@ public interface MDMessage {
 
 	  public int getTransactionID();
 	  public int getDataLength();
-	  public int getFunctionCode();
-
+	  public int getComm_code();
 	  /**
 	   * Returns the <i>raw</i> message as <tt>String</tt>
 	   * containing a hexadecimal series of bytes.
@@ -52,4 +51,6 @@ public interface MDMessage {
 	   */
 	  public void readFrom(DataInput din)
 	      throws IOException;
+	  
+	  public String getMessage();
 }

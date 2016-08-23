@@ -29,7 +29,7 @@ setDataLength(1);
 public ExceptionResponse(int fc) {
 //unitid and function code not counted.
 setDataLength(1);
-setFunctionCode(fc + Modbus.EXCEPTION_OFFSET);
+setComm_code((fc + Modbus.EXCEPTION_OFFSET));
 }//constructor
 
 /**
@@ -44,7 +44,7 @@ setFunctionCode(fc + Modbus.EXCEPTION_OFFSET);
 public ExceptionResponse(int fc, int exc) {
 //exception code, unitid and function code not counted.
 setDataLength(1);
-setFunctionCode(fc + Modbus.EXCEPTION_OFFSET);
+setComm_code((fc + Modbus.EXCEPTION_OFFSET));
 m_ExceptionCode = exc;
 }//constructor
 

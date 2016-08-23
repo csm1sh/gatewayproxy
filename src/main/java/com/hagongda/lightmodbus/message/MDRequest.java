@@ -36,7 +36,7 @@ public abstract class MDRequest extends MDMessageImpl{
 	   */
 	  public MDResponse createExceptionResponse(int EXCEPTION_CODE) {
 	    ExceptionResponse response =
-	        new ExceptionResponse(this.getFunctionCode(), EXCEPTION_CODE);
+	        new ExceptionResponse(this.getComm_code(), EXCEPTION_CODE);
 	      response.setTransactionID(this.getTransactionID());
 	    return response;
 	  }//createExceptionResponse

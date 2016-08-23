@@ -1,6 +1,7 @@
 package com.hagongda.lightmodbus.util;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 
 import com.hagongda.lightmodbus.message.MDMessage;
@@ -12,6 +13,18 @@ public final class MDUtil {
 	  private static BytesOutputStream m_ByteOut =
 		      new BytesOutputStream(Modbus.MAX_MESSAGE_LENGTH);
 
+	  public static final String toString(MDMessage msg){
+		    String ret = "-1";
+		    try {
+		      synchronized (m_ByteOut) {
+		        msg.writeTo(m_ByteOut);
+		        ret = new String(m_ByteOut.getBuffer(), 1, m_ByteOut.size(), Charset.forName("US-ASCII"));
+		        m_ByteOut.reset();
+		      }
+		    } catch (IOException ex) {
+		    }
+		    return ret;
+	  }
 		  /**
 		   * Converts a <tt>ModbusMessage</tt> instance into
 		   * a hex encoded string representation.

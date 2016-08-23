@@ -15,6 +15,8 @@ public class AuthServerRequest extends MDRequest{
 	public String getAuthCode() {
 		return authCode;
 	}
+	
+	
 
 	public void setAuthCode(String authCode) {
 		this.authCode = authCode;

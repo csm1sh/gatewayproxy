@@ -2,6 +2,7 @@ package com.hagongda.lightmodbus;
 
 import java.net.InetAddress;
 
+import com.hagongda.lightmodbus.code.GateWayCommandCode;
 import com.hagongda.lightmodbus.io.MDTCPMasterConnection;
 import com.hagongda.lightmodbus.io.MDTcpTransaction;
 import com.hagongda.lightmodbus.message.AuthServerRequest;
@@ -40,21 +41,19 @@ public class AuthServerTest {
 				System.out.println("Connected to " + addr.toString() + ":" + con.getPort());
 
 			// 3. Prepare the request
-			AuthServerRequest req = new AuthServerRequest();
-
-			if (Modbus.debug)
-				System.out.println("Request: " + req.getHexMessage());
+			AuthServerRequest authReq = (AuthServerRequest)MDRequestFactory.getInstacce().buildFrom(GateWayCommandCode.AUTH_GRPS);
+				System.out.println("Request: " + authReq.getMessage());
 			 //4. Prepare the transaction
 		      trans = new MDTcpTransaction(con);
-		      trans.setRequest(req);
+		      trans.setRequest(authReq);
 		      trans.setReconnecting(false);
 		      trans.execute();
 		      MDResponse res = trans.getResponse();
-		      if (Modbus.debug) System.out.println("Response: " + res.getHexMessage() );
+		      if (Modbus.debug) System.out.println("Response: " + res.getMessage() );
 			//con.close();
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			ex.printStackTrace(); 
 		}
 	}// main
 
