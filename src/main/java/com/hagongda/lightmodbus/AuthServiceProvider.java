@@ -1,5 +1,7 @@
 package com.hagongda.lightmodbus;
 
+import com.hagongda.devicebean.GatewayAuth;
+
 public class AuthServiceProvider {
 	private static  AuthServiceProvider instance = null;
 	private  AuthServiceProvider(){
@@ -14,8 +16,8 @@ public class AuthServiceProvider {
 	public IAuthService getDefault(){
 		return new IAuthService() {
 			
-			public String auth(String authCode) {
-				return "18563912825";
+			public boolean auth(GatewayAuth authCode) {
+				return true;
 			}
 		};
 	}

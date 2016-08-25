@@ -53,4 +53,6 @@ public interface MDMessage {
 	      throws IOException;
 	  
 	  public String getMessage();
+	  
+	  public String getParamBody();
 }

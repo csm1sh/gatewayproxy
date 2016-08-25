@@ -11,32 +11,37 @@ public class AuthServerResponse
     extends MDResponse
 {
 
-  static final int AUTH_CODE_LENGTH = 16;  
-  private String authCode;
   
-  public AuthServerResponse(){
+  String statusMsg;
+  public  AuthServerResponse(){
+     super();
+ }
+    
+  public AuthServerResponse(String statusMsg){
     super();
-    this.setDataLength(AUTH_CODE_LENGTH);
+    this.statusMsg = statusMsg;
+    this.setDataLength(statusMsg.getBytes().length);
     this.setComm_code( GateWayCommandCode.AUTH_SERVER);
   }
 
   @Override
   public void writeData(DataOutput dout) throws IOException
   {
-    dout.writeBytes(this.authCode); 
+    dout.writeBytes(this.statusMsg); 
   }
 
   @Override
   public void readData(DataInput din) throws IOException
   {
-		byte[] md5 = new byte[AUTH_CODE_LENGTH];
-		din.readFully(md5);
-		authCode = new String(md5);
+		byte[] msg = new byte[this.getDataLength()];
+		din.readFully(msg);
+		statusMsg = new String(msg);
+  }
 
-  }
-  
-  public void setAuthCode(String authCode){
-    this.authCode = authCode;
-  }
+@Override
+public String getParamBody()
+{
+    return statusMsg;
+}
 
 }

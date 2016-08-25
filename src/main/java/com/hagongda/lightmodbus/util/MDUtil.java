@@ -18,7 +18,7 @@ public final class MDUtil {
 		    try {
 		      synchronized (m_ByteOut) {
 		        msg.writeTo(m_ByteOut);
-		        ret = new String(m_ByteOut.getBuffer(), 1, m_ByteOut.size(), Charset.forName("US-ASCII"));
+		        ret = new String(m_ByteOut.getBuffer(), 0, m_ByteOut.size(), "UTF-8");
 		        m_ByteOut.reset();
 		      }
 		    } catch (IOException ex) {

@@ -8,7 +8,8 @@ import com.hagongda.lightmodbus.code.GateWayCommandCode;
 
 public class HeartBeatRequest  extends MDRequest {
 
-	public HeartBeatRequest() {
+	static final String heartBeatMsg ="{ greeting: 'hello'}";
+    public HeartBeatRequest() {
 		super();
 		this.setDataLength(0);
 		this.setComm_code( GateWayCommandCode.HEART_BEAT);
@@ -31,5 +32,12 @@ public class HeartBeatRequest  extends MDRequest {
 		// TODO Auto-generated method stub
 		
 	}
+
+    @Override
+    public String getParamBody()
+    {
+        // TODO Auto-generated method stub
+        return heartBeatMsg;
+    }
 
 }

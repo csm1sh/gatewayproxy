@@ -31,4 +31,11 @@ public class FunctionalRequest extends MDRequest {
 		
 	}
 
+    @Override
+    public String getParamBody()
+    {
+        // TODO Auto-generated method stub
+        return this.command.getParamBody();
+    }
+
 }

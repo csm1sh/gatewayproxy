@@ -4,25 +4,19 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
+
+import com.hagongda.devicebean.GatewayAuth;
 import com.hagongda.lightmodbus.code.GateWayCommandCode;
-import com.hagongda.lightmodbus.util.MDUtil;
+import com.hagongda.lightmodbus.util.Json2Object;
 
 
 public class AuthServerRequest extends MDRequest{
-	String password = "123456";
-	String phoneNum = "18563912825";
-	String authCode;
-	public String getAuthCode() {
-		return authCode;
-	}
-	
-	
 
-	public void setAuthCode(String authCode) {
-		this.authCode = authCode;
-	}
-
-	static final int AUTH_CODE_LENGTH = 16;  
+    /**
+      */
+    private final Logger logger = Logger.getLogger(AuthServerRequest.class);
+    GatewayAuth gatewayAuth = new GatewayAuth();
 	@Override
 	public MDResponse createResponse() {
 		// TODO Auto-generated method stub
@@ -31,20 +25,38 @@ public class AuthServerRequest extends MDRequest{
 	
 	public AuthServerRequest(){
 		super();
-		this.setDataLength(AUTH_CODE_LENGTH);
-		this.setComm_code( GateWayCommandCode.AUTH_SERVER);
+		//set default 
+		this.setDataLength(this.getDataLength());
+		this.setComm_code( GateWayCommandCode.AUTH_GRPS);
 	}
+	
+    public int getDataLength() {
+        return gatewayAuth.toJson().getBytes().length;
+      }
 
 	@Override
 	public void writeData(DataOutput dout) throws IOException {
-		dout.writeBytes(MDUtil.MD5(phoneNum).concat(password));
+		dout.writeBytes(gatewayAuth.toJson());
 	}
 
 	@Override
 	public void readData(DataInput din) throws IOException {
-		byte[] md5 = new byte[AUTH_CODE_LENGTH];
-		din.readFully(md5);
-		authCode = new String(md5);
+		byte[] authParambody = new byte[this.getDataLength()];
+		din.readFully(authParambody);
+		gatewayAuth = new Json2Object<GatewayAuth>(){}.toMap(new String(authParambody));
+		//logger.info(gatewayAuth.toJson());
 	}
+	
+    public GatewayAuth getGatewayAuth(){
+        return this.gatewayAuth;
+    }
+
+    @Override
+    public String getParamBody()
+    {
+        // TODO Auto-generated method stub
+        return gatewayAuth.toJson();
+    }
+	
 
 }

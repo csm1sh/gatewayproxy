@@ -2,17 +2,17 @@ package com.hagongda.lightmodbus;
 
 import java.net.InetAddress;
 
+import net.wimpi.modbus.Modbus;
+import org.apache.log4j.Logger;
 import com.hagongda.lightmodbus.code.GateWayCommandCode;
 import com.hagongda.lightmodbus.io.MDTCPMasterConnection;
 import com.hagongda.lightmodbus.io.MDTcpTransaction;
 import com.hagongda.lightmodbus.message.AuthServerRequest;
 import com.hagongda.lightmodbus.message.MDResponse;
 
-import net.wimpi.modbus.Modbus;
-
 public class AuthServerTest {
+    static final Logger logger = Logger.getLogger(AuthServerTest.class);
 	public static void main(String[] args) {
-
 		MDTCPMasterConnection con = null;
 		MDTcpTransaction trans = null;
 		InetAddress addr = null;
@@ -31,26 +31,22 @@ public class AuthServerTest {
 				printUsage();
 				System.exit(1);
 			}
-
 			// 2. Open the connection
 			con = new MDTCPMasterConnection(addr);
 			con.setPort(port);
 			con.connect();
-
-			if (Modbus.debug)
-				System.out.println("Connected to " + addr.toString() + ":" + con.getPort());
-
+			logger.info("Connected to " + addr.toString() + ":" + con.getPort());
 			// 3. Prepare the request
 			AuthServerRequest authReq = (AuthServerRequest)MDRequestFactory.getInstacce().buildFrom(GateWayCommandCode.AUTH_GRPS);
-				System.out.println("Request: " + authReq.getMessage());
+			logger.info("send Request: " + authReq.getMessage());
 			 //4. Prepare the transaction
 		      trans = new MDTcpTransaction(con);
 		      trans.setRequest(authReq);
 		      trans.setReconnecting(false);
 		      trans.execute();
 		      MDResponse res = trans.getResponse();
-		      if (Modbus.debug) System.out.println("Response: " + res.getMessage() );
-			//con.close();
+		      logger.info("Response: " + res.getMessage() );
+			 con.close();
 
 		} catch (Exception ex) {
 			ex.printStackTrace(); 

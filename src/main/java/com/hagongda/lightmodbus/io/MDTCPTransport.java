@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 
+import org.apache.log4j.Logger;
+
 import com.hagongda.lightmodbus.MDRequestFactory;
 import com.hagongda.lightmodbus.message.MDMessage;
 import com.hagongda.lightmodbus.message.MDRequest;
@@ -22,7 +24,8 @@ import net.wimpi.modbus.io.BytesInputStream;
 
 public class MDTCPTransport {
 
-	  //instance attributes
+	  static final Logger logger = Logger.getLogger(MDTCPTransport.class);
+      //instance attributes
 	  private DataInputStream m_Input;	  //input stream
 	  private DataOutputStream m_Output;	 //output stream
 	  private BytesInputStream m_ByteIn;
@@ -90,30 +93,31 @@ public class MDTCPTransport {
 	        int bf = MDUtil.registerToShort(buffer, 4);
 	        // extract command code
 	        int commCode = MDUtil.byteToInt(buffer, 1);
-	        System.out.println("Request Command code:" + commCode);
+	        logger.info("Request Command code:" + commCode);
 	        //
 	        //read rest
 	        if (m_Input.read(buffer, 6, bf) == -1) {
 	          throw new ModbusIOException("Premature end of stream (Message truncated).");
 	        }
-	        System.out.println(MDUtil.toHex(buffer));
+	        logger.info("byte value in 0X=" + MDUtil.toHex(buffer));
 	        // the total length of Package beside crc code;
 	        int totalLength = 6 + bf;
 	        m_ByteIn.reset(buffer, totalLength);
 	        //m_ByteIn.skip(7);
 	        //int functionCode = m_ByteIn.readUnsignedByte();
 	        m_ByteIn.reset();
-	        System.out.println("position:" + m_ByteIn.getPosition());
 	        req = MDRequestFactory.getInstacce().buildFrom(commCode);
-	        System.out.println("request build done:" + MDUtil.toHex(m_ByteIn.getBuffer()));
+	        //System.out.println("request build done:" + MDUtil.toHex(m_ByteIn.getBuffer()));
 	        req.readFrom(m_ByteIn);
-	        System.out.println("request build done:" + MDUtil.toHex(buffer));
+	        logger.info("incomming request=" + req.getMessage());
+	        //System.out.println("request build done:" + MDUtil.toHex(buffer));
 	      }
 	      return req;
 	    } catch (EOFException eoex) {
 	      throw new ModbusIOException(true);
 	    } catch (SocketException sockex) {
 	      //connection reset by peer, also EOF
+	        sockex.printStackTrace();
 	      throw new ModbusIOException(true);
 	    } catch (Exception ex) {
 	      ex.printStackTrace();

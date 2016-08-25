@@ -1,5 +1,6 @@
 package com.hagongda.lightmodbus.io;
 
+import com.hagongda.lightmodbus.exceptions.MDSlaveException;
 import com.hagongda.lightmodbus.message.ExceptionResponse;
 import com.hagongda.lightmodbus.message.MDRequest;
 import com.hagongda.lightmodbus.message.MDResponse;
@@ -130,7 +131,7 @@ public class MDTcpTransaction {
 	  }//setRetries
 
 	  public void execute() throws ModbusIOException,
-	      ModbusSlaveException,
+	      MDSlaveException,
 	      ModbusException {
 
 	    //1. check that the transaction can be executed
@@ -180,8 +181,8 @@ public class MDTcpTransaction {
 
 	      //5. deal with "application level" exceptions
 	      if (m_Response instanceof ExceptionResponse) {
-	        throw new ModbusSlaveException(
-	            ((ExceptionResponse) m_Response).getExceptionCode()
+	        throw new MDSlaveException(
+	            ((ExceptionResponse) m_Response).getExceptionMsg()
 	        );
 	      }
 

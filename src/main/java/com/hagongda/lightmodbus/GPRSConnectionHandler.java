@@ -5,7 +5,11 @@ import java.util.Date;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.hagongda.lightmodbus.code.ExceptionCode;
+import net.wimpi.modbus.ModbusIOException;
+
+import org.apache.log4j.Logger;
+
+import com.hagongda.devicebean.GatewayAuth;
 import com.hagongda.lightmodbus.code.GateWayCommandCode;
 import com.hagongda.lightmodbus.io.MDTCPSlaveConnection;
 import com.hagongda.lightmodbus.io.MDTCPTransport;
@@ -14,17 +18,17 @@ import com.hagongda.lightmodbus.message.AuthServerResponse;
 import com.hagongda.lightmodbus.message.MDRequest;
 import com.hagongda.lightmodbus.message.MDResponse;
 
-import net.wimpi.modbus.Modbus;
-import net.wimpi.modbus.ModbusIOException;
-
 public class GPRSConnectionHandler implements Runnable, CommandHandle {
+    final Lock lock = new ReentrantLock();    //注意这个地方
 
-	 private MDTCPSlaveConnection m_Connection;
+	 final private static Logger logger = Logger.getLogger(GPRSConnectionHandler.class); 
+     private MDTCPSlaveConnection m_Connection;
 	 private MDTCPTransport m_Transport;
 	 private IAuthService authService = AuthServiceProvider.getInstance().getDefault();
 	 private Date lastHBTime = new Date();
 	 private boolean running = true;
 	 private int waitingCount = 2;
+	 
 
 	  /**
 	   * Constructs a new <tt>TCPConnectionHandler</tt> instance.
@@ -52,16 +56,16 @@ public class GPRSConnectionHandler implements Runnable, CommandHandle {
 	    	  MDResponse response = null;
 	    	  //1. read the request
 	    	  MDRequest request = m_Transport.readRequest();
-	    	  if(request != null && request.getComm_code() == GateWayCommandCode.AUTH_SERVER){
+	    	  if(request != null && request.getComm_code() == GateWayCommandCode.AUTH_GRPS){
 	    		  response = handleAuth(request);
 	    	  }else if(request !=null && request.getComm_code() == GateWayCommandCode.HEART_BEAT){
 	    		  handleHB(request);
 	    	  }else{
-	    	    if (Modbus.debug) System.out.println("Request:" + request.getHexMessage());
-	    	    response = request.createResponse();
+	    	      logger.info("Recived other Request:" + request.getMessage());
+	    	      response = request.createResponse();
 	    	  }
 	        /*DEBUG*/
-	        if (Modbus.debug) System.out.println("Response:" + response.getHexMessage());
+	        logger.info("Send Response:" + response.getHexMessage());
 
 	        //System.out.println("Response:" + response.getHexMessage());
 	        if(response != null)
@@ -89,15 +93,13 @@ public class GPRSConnectionHandler implements Runnable, CommandHandle {
 	private MDResponse handleAuth(MDRequest request) {
 		MDResponse response = null;
 		AuthServerRequest authRequest= ((AuthServerRequest)request);
-		  String authCode= authRequest.getAuthCode();
-		  String phoneNum = authService.auth(authCode);
-		  if(phoneNum == null){
-			  response = request.createExceptionResponse(ExceptionCode.NOT_AHTHED);
+		  GatewayAuth auth = authRequest.getGatewayAuth();
+		  if(!authService.auth(auth)){
+			  response = request.createExceptionResponse(GatewayAuth.Failed());
 		  }else{ 
-		    AuthServerResponse authResponse = new AuthServerResponse();
-		    authResponse.setAuthCode(authCode);
+		    AuthServerResponse authResponse = new AuthServerResponse(GatewayAuth.Ok());
 		    response = authResponse;
-			GPRSHandlerPool.getInstance().register(authRequest.getAuthCode(), this);
+			GPRSHandlerPool.getInstance().register(auth.getPhoneNum(), this);
 		  }
 		return response;
 	}
@@ -115,7 +117,6 @@ public class GPRSConnectionHandler implements Runnable, CommandHandle {
   //read request from message queue consumer
   public void sendRequest(MDRequest request)
   {
-	  Lock lock = new ReentrantLock();    //注意这个地方
       lock.lock();
 	 try {
 		m_Transport.writeMessage(request);

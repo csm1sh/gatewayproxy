@@ -34,9 +34,9 @@ public abstract class MDRequest extends MDMessageImpl{
 	   * @return a ModbusResponse instance representing the exception
 	   *         response.
 	   */
-	  public MDResponse createExceptionResponse(int EXCEPTION_CODE) {
+	  public MDResponse createExceptionResponse(String EXCEPTION_MSG) {
 	    ExceptionResponse response =
-	        new ExceptionResponse(this.getComm_code(), EXCEPTION_CODE);
+	        new ExceptionResponse(this.getComm_code(), EXCEPTION_MSG);
 	      response.setTransactionID(this.getTransactionID());
 	    return response;
 	  }//createExceptionResponse

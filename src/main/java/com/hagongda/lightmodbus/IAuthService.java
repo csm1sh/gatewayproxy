@@ -1,5 +1,7 @@
 package com.hagongda.lightmodbus;
 
+import com.hagongda.devicebean.GatewayAuth;
+
 public interface IAuthService {
-	public String auth(String authCode);
+	public boolean auth(GatewayAuth authCode);
 }

@@ -10,14 +10,12 @@ public class ExceptionResponse
 extends MDResponse {
 
 //instance attributes
-private int m_ExceptionCode = -1;
+private String m_ExceptionMsg = "-1";
 
 /**
 * Constructs a new <tt>ExceptionResponse</tt> instance.
 */
 public ExceptionResponse() {
-//exception code, unitid and function code not counted.
-setDataLength(1);
 }//constructor
 
 /**
@@ -27,9 +25,7 @@ setDataLength(1);
 * @param fc the function code as <tt>int</tt>.
 */
 public ExceptionResponse(int fc) {
-//unitid and function code not counted.
-setDataLength(1);
-setComm_code((fc + Modbus.EXCEPTION_OFFSET));
+    setComm_code(fc);
 }//constructor
 
 /**
@@ -41,11 +37,11 @@ setComm_code((fc + Modbus.EXCEPTION_OFFSET));
 * @param fc the function code as <tt>int</tt>.
 * @param exc the exception code as <tt>int</tt>.
 */
-public ExceptionResponse(int fc, int exc) {
+public ExceptionResponse(int fc, String msg) {
 //exception code, unitid and function code not counted.
 setDataLength(1);
-setComm_code((fc + Modbus.EXCEPTION_OFFSET));
-m_ExceptionCode = exc;
+setComm_code(fc);
+m_ExceptionMsg = msg;
 }//constructor
 
 /**
@@ -54,18 +50,27 @@ m_ExceptionCode = exc;
 * <p>
 * @return the exception code as <tt>int</tt>.
 */
-public int getExceptionCode() {
-return m_ExceptionCode;
+public String getExceptionMsg() {
+return m_ExceptionMsg;
 }//getExceptionCode
 
 public void writeData(DataOutput dout)
   throws IOException {
-dout.writeByte(getExceptionCode());
+dout.writeBytes(getExceptionMsg());
 }//writeData
 
 public void readData(DataInput din)
   throws IOException {
-m_ExceptionCode = din.readUnsignedByte();
+    byte[] msg = new byte[this.getDataLength()];
+ din.readFully(msg);
+ m_ExceptionMsg = new String(msg);
 }//readData
+
+@Override
+public String getParamBody()
+{
+    // TODO Auto-generated method stub
+    return m_ExceptionMsg;
+}
 
 }//ExceptionResponse

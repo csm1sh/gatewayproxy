@@ -1,5 +1,7 @@
 package com.hagongda.devicebean;
 
+import com.hagongda.lightmodbus.util.Json2Object;
+
 public class User
 {
 private String user;
@@ -20,5 +22,6 @@ public void setMd5_passwd(String md5_passwd)
 {
     this.md5_passwd = md5_passwd;
 }
+
 
 }

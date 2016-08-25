@@ -3,14 +3,19 @@ package com.hagongda.lightmodbus.message;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-
-import com.hagongda.lightmodbus.util.MDUtil;
+import java.io.Serializable;
 
 import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.io.BytesOutputStream;
 
+import org.apache.log4j.Logger;
+
+import com.hagongda.lightmodbus.util.Json2Object;
+import com.hagongda.lightmodbus.util.MDUtil;
+
 public abstract class MDMessageImpl implements MDMessage{
-	//instance attributes
+    final Logger logger = Logger.getLogger(MDMessageImpl.class);
+    //instance attributes
 	  private int m_TransactionID = Modbus.DEFAULT_TRANSACTION_ID;
 	  private int m_DataLength;
 	  private int comm_code;
@@ -108,10 +113,11 @@ public abstract class MDMessageImpl implements MDMessage{
 	  public void readFrom(DataInput din)
 	      throws IOException {
 		  din.readByte();
-		  this.setComm_code(din.readByte());
+		  this.setComm_code(din.readUnsignedByte());
 	      setTransactionID(din.readUnsignedShort());
 	      m_DataLength = din.readUnsignedShort();
 	    //setFunctionCode(din.readUnsignedByte());
+	     // setComm_code(din.readUnsignedByte());
 	    readData(din);
 	  }//readFrom
 
@@ -142,6 +148,7 @@ public abstract class MDMessageImpl implements MDMessage{
 	  }//getHexMessage
 	  
 	   public String getMessage() {
-	        return MDUtil.toString(this);
+	       return "command code: " +this.comm_code + ", transaction Number:" + this.getTransactionID()
+	               + ", parabody: " + this.getParamBody();
 	      }//getHexMessage
 }
