@@ -1,21 +1,19 @@
 package com.hagongda;
 
 import java.net.InetAddress;
-
 import javax.annotation.PostConstruct;
-
-import org.apache.log4j.Logger;
+import net.wimpi.modbus.Modbus;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import com.hagongda.lightmodbus.io.MDTcpListener;
-
-import net.wimpi.modbus.Modbus;
 
 @SpringBootApplication
 public class Application {
 
-    private Logger logger = Logger.getLogger(Application.class);
+    private Log logger = LogFactory.getLog(Application.class);
+    
 	public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
