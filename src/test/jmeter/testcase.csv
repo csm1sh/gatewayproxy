@@ -1,0 +1,18 @@
+18563232234,/light/group,"{
+   groupId: 10,
+   lightAddress: {
+          startIndex: 10,
+          offset: 3
+   }
+}",POST
+18563232234,/light/position,"{
+  longitude: 23.12,
+  gratitude: 45.34,
+  lightAddress: {
+          address: [11]
+   }
+}",POST
+18563232234,/light/time,"{
+ zoneId: 10,
+  timeslot:[180, 150, 160]
+}",POST

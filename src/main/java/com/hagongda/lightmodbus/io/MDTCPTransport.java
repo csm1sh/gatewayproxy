@@ -70,6 +70,7 @@ public class MDTCPTransport {
 	      m_Output.flush();
 	      //write more sophisticated exception handling
 	    } catch (Exception ex) {
+	      ex.printStackTrace();
 	      throw new ModbusIOException("I/O exception - failed to write.");
 	    }
 	  }//write
@@ -109,11 +110,13 @@ public class MDTCPTransport {
 	        req = MDRequestFactory.getInstacce().buildFrom(commCode);
 	        //System.out.println("request build done:" + MDUtil.toHex(m_ByteIn.getBuffer()));
 	        req.readFrom(m_ByteIn);
-	        logger.info("incomming request=" + req.getMessage());
+	        logger.info("Incomming request=" + req.getMessage());
 	        //System.out.println("request build done:" + MDUtil.toHex(buffer));
+	        //m_ByteIn.reset();
 	      }
 	      return req;
 	    } catch (EOFException eoex) {
+	    	eoex.printStackTrace();
 	      throw new ModbusIOException(true);
 	    } catch (SocketException sockex) {
 	      //connection reset by peer, also EOF

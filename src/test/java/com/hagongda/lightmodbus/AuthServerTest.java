@@ -2,13 +2,16 @@ package com.hagongda.lightmodbus;
 
 import java.net.InetAddress;
 
-import net.wimpi.modbus.Modbus;
 import org.apache.log4j.Logger;
+
 import com.hagongda.lightmodbus.code.GateWayCommandCode;
 import com.hagongda.lightmodbus.io.MDTCPMasterConnection;
 import com.hagongda.lightmodbus.io.MDTcpTransaction;
 import com.hagongda.lightmodbus.message.AuthServerRequest;
+import com.hagongda.lightmodbus.message.MDRequest;
 import com.hagongda.lightmodbus.message.MDResponse;
+
+import net.wimpi.modbus.Modbus;
 
 public class AuthServerTest {
     static final Logger logger = Logger.getLogger(AuthServerTest.class);
@@ -33,6 +36,7 @@ public class AuthServerTest {
 			}
 			// 2. Open the connection
 			con = new MDTCPMasterConnection(addr);
+			con.setTimeout(1000000);
 			con.setPort(port);
 			con.connect();
 			logger.info("Connected to " + addr.toString() + ":" + con.getPort());
@@ -45,11 +49,16 @@ public class AuthServerTest {
 		      trans.setReconnecting(false);
 		      trans.execute();
 		      MDResponse res = trans.getResponse();
-		      logger.info("Response: " + res.getMessage() );
-			 con.close();
-
+		      logger.info("auth Response: " + res.getMessage() );
+		      while(true){
+		    	  Thread.currentThread().sleep(1000);
+		    	  MDRequest functionRequst = con.getModbusTransport().readRequest();
+		    	  logger.info("function request =" + functionRequst.getMessage());
+		      }
 		} catch (Exception ex) {
 			ex.printStackTrace(); 
+		}finally{
+			con.close();
 		}
 	}// main
 

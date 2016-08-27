@@ -119,6 +119,7 @@ public abstract class MDMessageImpl implements MDMessage{
 	    //setFunctionCode(din.readUnsignedByte());
 	     // setComm_code(din.readUnsignedByte());
 	    readData(din);
+	    //din.readByte();
 	  }//readFrom
 
 	  /**

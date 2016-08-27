@@ -40,7 +40,7 @@ public abstract class MDResponse  extends MDMessageImpl {
 	    MDResponse response = null;
 
 	    switch (functionCode) {
-	      case GateWayCommandCode.AUTH_SERVER:
+	      case GateWayCommandCode.AUTH_GRPS:
 	        response = new AuthServerResponse(); break;
 	      default:
 	        response = new ExceptionResponse();

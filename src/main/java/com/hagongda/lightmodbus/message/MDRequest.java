@@ -88,7 +88,7 @@ public abstract class MDRequest extends MDMessageImpl{
 		    MDRequest request = null;
 
 		    switch (commCode) {
-		     case GateWayCommandCode.AUTH_SERVER:
+		     case GateWayCommandCode.AUTH_GRPS:
 		        request = new AuthServerRequest();
 		        break;
 		      default:

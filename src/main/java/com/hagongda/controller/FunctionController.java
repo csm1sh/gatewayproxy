@@ -16,6 +16,7 @@ import com.hagongda.lightmodbus.GPRSHandlerPool;
 import com.hagongda.lightmodbus.MDRequestFactory;
 import com.hagongda.lightmodbus.code.GateWayCommandCode;
 import com.hagongda.lightmodbus.command.FunctionalCommand;
+import com.hagongda.lightmodbus.message.MDRequest;
 
 @RestController
 @RequestMapping(value="/v1/{gatewayId}", produces="application/json")
@@ -72,15 +73,15 @@ public class FunctionController {
 	
 	
 	
-	private CommandHandle forward(String gatewayId, FunctionalCommand command) throws Exception{
+	private void forward(String gatewayId, FunctionalCommand command) throws Exception{
 		CommandHandle handler = GPRSHandlerPool.getInstance().get(gatewayId);
 		if(handler == null){
 			throw new InvalidGatewayException();
 		}else if(handler.isBusy()){
 			throw new GatewayBusyException();
 		}
-		MDRequestFactory.getInstacce().buildFrom(command);
-		return handler;
+		MDRequest req =  MDRequestFactory.getInstacce().buildFrom(command);
+		handler.sendRequest(req);
 	}
 	
 	@ExceptionHandler(GatewayBusyException.class)

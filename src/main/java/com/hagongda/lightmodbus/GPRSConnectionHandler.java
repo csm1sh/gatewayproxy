@@ -65,7 +65,7 @@ public class GPRSConnectionHandler implements Runnable, CommandHandle {
 	    	      response = request.createResponse();
 	    	  }
 	        /*DEBUG*/
-	        logger.info("Send Response:" + response.getHexMessage());
+	        logger.info("Send Response:" + response.getMessage());
 
 	        //System.out.println("Response:" + response.getHexMessage());
 	        if(response != null)
@@ -119,6 +119,7 @@ public class GPRSConnectionHandler implements Runnable, CommandHandle {
   {
       lock.lock();
 	 try {
+		logger.info("write request=" + request.getMessage());
 		m_Transport.writeMessage(request);
 	} catch (ModbusIOException e) {
 		e.printStackTrace();

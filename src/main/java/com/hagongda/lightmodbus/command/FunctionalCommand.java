@@ -25,7 +25,7 @@ public class FunctionalCommand implements ICommand {
 
 	@Override
 	public int getCommandCode() {
-		return this.getCommandCode();
+		return this.command_code;
 	}
 
 }

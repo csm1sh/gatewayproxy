@@ -12,7 +12,7 @@ public interface GateWayCommandCode
     public final int SET_TIME_SLOT = 9;
     public final int BULK_CONFIG = 10;
     public final int AUTH_SERVER = 11;
-    public final int AUTH_GRPS = 12;
+    public final int AUTH_GRPS = 19;
 
 
 }

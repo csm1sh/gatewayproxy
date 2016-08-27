@@ -14,14 +14,15 @@ public class AuthServerResponse
   
   String statusMsg;
   public  AuthServerResponse(){
-     super();
+	  super();
+	 this.setComm_code( GateWayCommandCode.AUTH_GRPS);
  }
     
   public AuthServerResponse(String statusMsg){
     super();
     this.statusMsg = statusMsg;
     this.setDataLength(statusMsg.getBytes().length);
-    this.setComm_code( GateWayCommandCode.AUTH_SERVER);
+    this.setComm_code( GateWayCommandCode.AUTH_GRPS);
   }
 
   @Override
