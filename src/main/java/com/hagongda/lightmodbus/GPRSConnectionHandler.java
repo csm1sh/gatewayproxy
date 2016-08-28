@@ -61,15 +61,16 @@ public class GPRSConnectionHandler implements Runnable, CommandHandle {
 	    	  }else if(request !=null && request.getComm_code() == GateWayCommandCode.HEART_BEAT){
 	    		  handleHB(request);
 	    	  }else{
-	    	      logger.info("Recived other Request:" + request.getMessage());
-	    	      response = request.createResponse();
+	    	      logger.info("Server::Recived functional response:" + request.getMessage());
+	    	      //response = request.createResponse();
 	    	  }
 	        /*DEBUG*/
-	        logger.info("Send Response:" + response.getMessage());
 
 	        //System.out.println("Response:" + response.getHexMessage());
-	        if(response != null)
-	          m_Transport.writeMessage(response);
+	        if(response != null){
+	        	logger.info("Server::Send Response:" + response.getMessage());
+	        	m_Transport.writeMessage(response);
+	        }
 	      } while (running);
 	    } catch (ModbusIOException ex) {
 	    	ex.printStackTrace();
@@ -119,7 +120,6 @@ public class GPRSConnectionHandler implements Runnable, CommandHandle {
   {
       lock.lock();
 	 try {
-		logger.info("write request=" + request.getMessage());
 		m_Transport.writeMessage(request);
 	} catch (ModbusIOException e) {
 		e.printStackTrace();

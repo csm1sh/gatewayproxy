@@ -44,6 +44,7 @@ public class AuthServerRequest extends MDRequest{
 		byte[] authParambody = new byte[this.getDataLength()];
 		din.readFully(authParambody);
 		gatewayAuth = new Json2Object<GatewayAuth>(){}.toMap(new String(authParambody));
+		//din.readByte();
 		//logger.info(gatewayAuth.toJson());
 	}
 	

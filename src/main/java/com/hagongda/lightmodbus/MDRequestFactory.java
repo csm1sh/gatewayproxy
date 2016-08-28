@@ -19,6 +19,11 @@ public class MDRequestFactory {
 			   request = new HeartBeatRequest(); break;
 		 case GateWayCommandCode.ALARM:
 			   request = new AlarmRequest(); break;
+		 case GateWayCommandCode.SET_LOCATION:
+		 case GateWayCommandCode.SET_GROUP:
+		 case GateWayCommandCode.SET_TIME:
+		 case GateWayCommandCode.SET_TIME_SLOT:
+			   request = new FunctionalRequest(comandCode); break;
 		  default:
 			  request = null;
 		 }

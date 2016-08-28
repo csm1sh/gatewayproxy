@@ -84,7 +84,7 @@ public abstract class MDMessageImpl implements MDMessage{
 	    dout.writeShort(getTransactionID());
 	    dout.writeShort(getDataLength());
 	    writeData(dout);
-	    dout.writeByte(calCrc());
+	   // dout.writeByte(calCrc());
 	  }//writeTo
 	  
 	  protected  int calCrc() throws IOException{

@@ -100,7 +100,7 @@ public class MDTCPTransport {
 	        if (m_Input.read(buffer, 6, bf) == -1) {
 	          throw new ModbusIOException("Premature end of stream (Message truncated).");
 	        }
-	        logger.info("byte value in 0X=" + MDUtil.toHex(buffer));
+	        //logger.info("byte value in 0X=" + MDUtil.toHex(buffer));
 	        // the total length of Package beside crc code;
 	        int totalLength = 6 + bf;
 	        m_ByteIn.reset(buffer, totalLength);

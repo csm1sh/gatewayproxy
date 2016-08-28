@@ -4,6 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import com.hagongda.lightmodbus.command.FunctionalCommand;
 import com.hagongda.lightmodbus.command.ICommand;
 
 public class FunctionalRequest extends MDRequest {
@@ -14,10 +15,17 @@ public class FunctionalRequest extends MDRequest {
 		this.setComm_code(command.getCommandCode());
 		this.setDataLength(command.getParamBody().getBytes().length);
 	}
+	
+	public FunctionalRequest( int command) {
+		super();
+		this.setComm_code(command);
+	}
 
 	@Override
 	public MDResponse createResponse() {
-		return null;
+		FunctionalResponse response =  new FunctionalResponse(this.getComm_code());
+		response.setTransactionID(this.getTransactionID());
+		return response;
 	}
 
 	@Override
@@ -27,8 +35,9 @@ public class FunctionalRequest extends MDRequest {
 
 	@Override
 	public void readData(DataInput din) throws IOException {
-		// TODO Auto-generated method stub
-		
+		byte[] authParambody = new byte[this.getDataLength()];
+		din.readFully(authParambody);
+		command = new FunctionalCommand(this.getComm_code(), new String(authParambody));
 	}
 
     @Override
