@@ -3,9 +3,7 @@ package com.hagongda.lightmodbus.io;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-
 import net.wimpi.modbus.Modbus;
-import net.wimpi.modbus.io.ModbusTransport;
 
 public class MDTCPSlaveConnection {
 	//instance attributes

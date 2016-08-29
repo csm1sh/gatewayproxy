@@ -8,6 +8,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import com.hagongda.lightmodbus.GPRSConnectionHandler;
+import com.hagongda.lightmodbus.GPRSConnectionReadHandler;
+import com.hagongda.lightmodbus.GPRSHandlerPool;
 
 import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.util.ThreadPool;
@@ -115,9 +117,12 @@ public class MDTcpListener implements Runnable {
 	          //FIXME: Replace with object pool due to resource issues
 	        	MDTCPSlaveConnection conn =  new MDTCPSlaveConnection(incoming);
 	        	conn.setTimeout(1000000);
-				m_ThreadPool.execute(new GPRSConnectionHandler(conn)
-	          );
-	          count();
+	        	if (m_Port == Modbus.DEFAULT_PORT) {
+	        		GPRSHandlerPool.getInstance().putNotAuthedPool(new GPRSConnectionHandler(conn));
+	        	} else if (m_Port == Modbus.DEFAULT_PORT + 1){
+	        		m_ThreadPool.execute(new GPRSConnectionReadHandler(conn));
+	        	}
+	            count();
 	        } else {
 	          //just close the socket
 	          incoming.close();

@@ -22,12 +22,16 @@ public class Application {
     public void startSouthAPI(){
     	logger.info("starting south API.....");
     	MDTcpListener listener = null;
+    	MDTcpListener listener4ReadHandler = null;
 	    int port = Modbus.DEFAULT_PORT;
 	    try {
 	      //3. create a listener with 10 threads in pool
 	      listener = new MDTcpListener(10, InetAddress.getByName("localhost"));
 	      listener.setPort(port);
 	      listener.start();
+	      listener4ReadHandler = new MDTcpListener(10, InetAddress.getByName("localhost"));
+	      listener4ReadHandler.setPort(port + 1);
+	      listener4ReadHandler.start();
 	    } catch (Exception ex) {
 	    	logger.fatal("South API listerner failed to starup!!!!!");
 	    }

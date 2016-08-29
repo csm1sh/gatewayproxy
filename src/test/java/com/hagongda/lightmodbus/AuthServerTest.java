@@ -1,16 +1,12 @@
 package com.hagongda.lightmodbus;
 
 import java.net.InetAddress;
-
 import org.apache.log4j.Logger;
-
 import com.hagongda.lightmodbus.code.GateWayCommandCode;
 import com.hagongda.lightmodbus.io.MDTCPMasterConnection;
 import com.hagongda.lightmodbus.io.MDTcpTransaction;
 import com.hagongda.lightmodbus.message.AuthServerRequest;
-import com.hagongda.lightmodbus.message.MDRequest;
 import com.hagongda.lightmodbus.message.MDResponse;
-
 import net.wimpi.modbus.Modbus;
 
 public class AuthServerTest {
@@ -19,7 +15,7 @@ public class AuthServerTest {
 		MDTCPMasterConnection con = null;
 		MDTcpTransaction trans = null;
 		InetAddress addr = null;
-		int port = Modbus.DEFAULT_PORT;
+		int port = Modbus.DEFAULT_PORT + 1;
 		try {
 			try {
 				String astr = args[0];
@@ -50,14 +46,7 @@ public class AuthServerTest {
 		      trans.execute();
 		      MDResponse res = trans.getResponse();
 		      logger.info("simulator::send auth Response: " + res.getMessage() );
-		      while(true){
-		    	  Thread.currentThread().sleep(1000);
-		    	  MDRequest functionRequst = con.getModbusTransport().readRequest();
-		    	  logger.info("simulator::recived function request =" + functionRequst.getMessage());
-		    	  MDResponse response = functionRequst.createResponse();
-		    	  logger.info("simulator::sending function response =" + response.getMessage());
-		    	  con.getModbusTransport().writeMessage(response);
-		      }
+
 		} catch (Exception ex) {
 			ex.printStackTrace(); 
 		}finally{
