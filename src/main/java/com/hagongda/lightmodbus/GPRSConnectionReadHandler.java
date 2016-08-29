@@ -60,12 +60,16 @@ public class GPRSConnectionReadHandler implements Runnable{
 					switch (commandCode) {
 						case GateWayCommandCode.AUTH_GRPS:
 							response = handleAuth(request);
+							break;
 						case GateWayCommandCode.HEART_BEAT:
 							handleHB(request);
+							break;
 						case GateWayCommandCode.ALARM:
 							handleAlarm(request);
+							break;
 						default:
 							response = request.createExceptionResponse("Unsupported request.");
+							break;
 					}
 						
 				}

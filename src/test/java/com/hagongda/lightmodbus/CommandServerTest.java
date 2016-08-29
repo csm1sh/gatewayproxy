@@ -10,10 +10,10 @@ import net.wimpi.modbus.Modbus;
 public class CommandServerTest {
 	 static final Logger logger = Logger.getLogger(AuthServerTest.class);
 		public static void main(String[] args) {
-			MDTCPMasterConnection con = null;
-			InetAddress addr = null;
+			MDTCPMasterConnection con = null;			
 			int port = Modbus.DEFAULT_PORT;
 			try {
+				InetAddress addr = InetAddress.getByName("localhost");
 				con = new MDTCPMasterConnection(addr);
 				con.setTimeout(1000000);
 				con.setPort(port);
