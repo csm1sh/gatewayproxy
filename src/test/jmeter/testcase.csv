@@ -16,3 +16,15 @@
  zoneId: 10,
   timeslot:[180, 150, 160]
 }",POST
+18563232234,/light/time,"{
+ zoneId: 10,
+  timeslot:[180, 150, 160]
+}",POST
+18563232234,/light/time,"{
+ zoneId: 10,
+  timeslot:[180, 150, 160]
+}",POST
+18563232234,/light/time,"{
+ zoneId: 10,
+  timeslot:[180, 150, 160]
+}",POST

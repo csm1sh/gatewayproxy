@@ -9,15 +9,12 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
-
 import org.apache.log4j.Logger;
-
 import com.hagongda.lightmodbus.MDRequestFactory;
 import com.hagongda.lightmodbus.message.MDMessage;
 import com.hagongda.lightmodbus.message.MDRequest;
 import com.hagongda.lightmodbus.message.MDResponse;
 import com.hagongda.lightmodbus.util.MDUtil;
-
 import net.wimpi.modbus.Modbus;
 import net.wimpi.modbus.ModbusIOException;
 import net.wimpi.modbus.io.BytesInputStream;

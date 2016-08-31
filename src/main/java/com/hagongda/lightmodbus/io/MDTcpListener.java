@@ -118,7 +118,7 @@ public class MDTcpListener implements Runnable {
 	        	MDTCPSlaveConnection conn =  new MDTCPSlaveConnection(incoming);
 	        	conn.setTimeout(1000000);
 	        	if (m_Port == Modbus.DEFAULT_PORT) {
-	        		GPRSHandlerPool.getInstance().putNotAuthedPool(new GPRSConnectionHandler(conn));
+	        		m_ThreadPool.execute(new GPRSConnectionHandler(conn));
 	        	} else if (m_Port == Modbus.DEFAULT_PORT + 1){
 	        		m_ThreadPool.execute(new GPRSConnectionReadHandler(conn));
 	        	}

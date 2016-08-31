@@ -5,22 +5,18 @@ import java.util.LinkedList;
 import java.util.Queue;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.hagongda.devicebean.GatewayAuth;
 import com.hagongda.lightmodbus.code.GateWayCommandCode;
 import com.hagongda.lightmodbus.io.MDTCPSlaveConnection;
 import com.hagongda.lightmodbus.io.MDTCPTransport;
 import com.hagongda.lightmodbus.message.AlarmRequest;
-import com.hagongda.lightmodbus.message.AuthServerRequest;
-import com.hagongda.lightmodbus.message.AuthServerResponse;
 import com.hagongda.lightmodbus.message.MDRequest;
 import com.hagongda.lightmodbus.message.MDResponse;
 import net.wimpi.modbus.ModbusIOException;
 
-public class GPRSConnectionReadHandler implements Runnable{
+public class GPRSConnectionReadHandler extends BaseConnectionHandler implements Runnable {
 	private final Log logger = LogFactory.getLog(GPRSConnectionReadHandler.class);
 	private MDTCPSlaveConnection m_Connection;
 	private MDTCPTransport m_Transport;
-	private IAuthService authService = AuthServiceProvider.getInstance().getDefault();
 	private boolean running = true;
 	private Queue<AlarmRequest> alarmQueue = new LinkedList<AlarmRequest>();
 	private String gatewayId;
@@ -59,7 +55,7 @@ public class GPRSConnectionReadHandler implements Runnable{
 					int commandCode = request.getComm_code();
 					switch (commandCode) {
 						case GateWayCommandCode.AUTH_GRPS:
-							response = handleAuth(request);
+							response = auth(request);
 							break;
 						case GateWayCommandCode.HEART_BEAT:
 							handleHB(request);
@@ -97,19 +93,6 @@ public class GPRSConnectionReadHandler implements Runnable{
 		}		
 	}
 	
-	private MDResponse handleAuth(MDRequest request) {
-		MDResponse response = null;
-		AuthServerRequest authRequest= ((AuthServerRequest)request);
-		  GatewayAuth auth = authRequest.getGatewayAuth();
-		  if(!authService.auth(auth)){
-			  response = request.createExceptionResponse(GatewayAuth.Failed());
-		  }else{ 
-			response = new AuthServerResponse(GatewayAuth.Ok());
-		    GPRSReadHandlerPool.getInstance().register(auth.getPhoneNum(), this);
-		  }
-		return response;
-	}
-	
 	private void handleHB(MDRequest request){
 	    
 	}
@@ -124,6 +107,11 @@ public class GPRSConnectionReadHandler implements Runnable{
 	public void destroy() throws IOException {
 		running = false;
 	    m_Connection.close();
+	}
+
+	@Override
+	public void registeSelfAfterAuth(String gatewayId) {
+		GPRSReadHandlerPool.getInstance().register(gatewayId, this);		
 	}
 
 }

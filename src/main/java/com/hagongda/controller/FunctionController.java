@@ -1,5 +1,7 @@
 package com.hagongda.controller;
 
+import java.util.concurrent.TimeoutException;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.hagongda.lightmodbus.CommandHandle;
 import com.hagongda.lightmodbus.GPRSHandlerPool;
 import com.hagongda.lightmodbus.MDRequestFactory;
 import com.hagongda.lightmodbus.code.GateWayCommandCode;
 import com.hagongda.lightmodbus.command.FunctionalCommand;
 import com.hagongda.lightmodbus.message.MDRequest;
+import org.springframework.http.MediaType;
 
 @RestController
-@RequestMapping(value="/v1/{gatewayId}", produces="application/json")
+@RequestMapping(value="/v1/{gatewayId}", produces=MediaType.APPLICATION_JSON_VALUE)
 @Scope(value="prototype")
 public class FunctionController {
 	
@@ -89,6 +91,13 @@ public class FunctionController {
 	@ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
 	public String gatewayBusy() {
 	    return "{status: 'gateway is busy, request later!'}";
+	}
+	
+	@ExceptionHandler(TimeoutException.class)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.GATEWAY_TIMEOUT)
+	public String gatewayNoResponse() {
+	    return "{status: 'gateway is not response'}";
 	}
 	
 	@ExceptionHandler(InvalidGatewayException.class)

@@ -39,11 +39,16 @@ public abstract class MDResponse  extends MDMessageImpl {
 	  public static MDResponse createMDResponse(int functionCode) {
 	    MDResponse response = null;
 
-	    switch (functionCode) {
-	      case GateWayCommandCode.AUTH_GRPS:
-	        response = new AuthServerResponse(); break;
-	      default:
-	        response = new ExceptionResponse();
+	    switch (functionCode) {	        
+	        case GateWayCommandCode.AUTH_GRPS:
+	        	response = new AuthServerResponse(); break;
+			case GateWayCommandCode.SET_LOCATION:
+			case GateWayCommandCode.SET_GROUP:
+			case GateWayCommandCode.SET_TIME:
+			case GateWayCommandCode.SET_TIME_SLOT:
+				response = new FunctionalResponse(functionCode); break;
+			default:
+				response = new ExceptionResponse();
 	    }
 	    return response;
 	  }//createMDResponse

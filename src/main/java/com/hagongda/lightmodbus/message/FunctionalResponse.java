@@ -4,8 +4,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import com.hagongda.lightmodbus.code.GateWayCommandCode;
-
 public class FunctionalResponse extends MDResponse {
 
 	private static final String  OK = "{ status:'OK'}";
